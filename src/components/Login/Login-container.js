@@ -3,50 +3,50 @@ import { useHistory } from 'react-router-dom';
 import LoginPage from './LoginPage';
 
 const Login = () => {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setError] = useState({ usernameerror: "", passworderror: "", error: "" });
-    let isValid = false;
+    const [errors, setError] = useState({ emailError: "", passwordError: "", error: "" });
+    let isValid = true;
     const history = useHistory();
 
-    const handleUsername = (evt) => {
+    const handleEmail = (evt) => {
         if (!evt.target.value) {
             isValid = false;
-            setError({ ...errors, usernameerror: "Username can't be empty" });
+            setError({ ...errors, emailError: "email can't be empty" });
         } else {
             isValid = true;
-            setError({ ...errors, usernameerror: "" });
+            setError({ ...errors, emailError: "" });
         }
-        setUsername(evt.target.value);
+        setEmail(evt.target.value);
     }
     const handlePassword = (evt) => {
         if (!evt.target.value) {
             isValid = false;
-            setError({ ...errors, passworderror: "Password can't be empty" });
+            setError({ ...errors, passwordError: "Password can't be empty" });
         } else {
             isValid = true;
-            setError({ ...errors, passworderror: "" });
+            setError({ ...errors, passwordError: "" });
         }
         setPassword(evt.target.value);
     }
     const handleSubmit = (evt) => {
         evt.preventDefault();
         let er = {};
-        if (!username) {
+        if (!email) {
             isValid = false;
-            er = { ...er, usernameerror: "Username can't be empty " }
+            er = { ...er, emailError: "Email can't be empty " }
         }
         if (!password) {
             isValid = false;
-            er = { ...er, passworderror: "Password can't be empty" }
+            er = { ...er, passwordError: "Password can't be empty" }
         }
         if (!isValid) {
             setError({ ...errors, ...er })
         }
         else {
-            fetch('http://localhost:4000/users/authenticate', {
-                method: "POST", headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username, password: password })
+            fetch('http://localhost:4000/api/Users/login', {
+                method: "POST", headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ email: email, password: password })
             })
                 .then(response => {
                     if (response.ok) {
@@ -54,7 +54,8 @@ const Login = () => {
                     }
                 })
                 .then(data => {
-                    if (data) {
+                    console.log(data)
+                    if (!data.error) {
                         if (data.message) {
                             setError({ ...errors, error: data.message });
 
@@ -62,15 +63,18 @@ const Login = () => {
                             history.push('/dashboard');
                         }
 
+                    } else {
+                        setError({ ...errors, error: data.error.message });
                     }
+
                 })
-                .catch(error => alert("Internal server error"));
+                .catch(error => console.log());
 
         }
     }
 
     return (
-        <LoginPage handlePassword={handlePassword} handleUsername={handleUsername} handleSubmit={handleSubmit} errors={errors} />
+        <LoginPage handlePassword={handlePassword} handleEmail={handleEmail} handleSubmit={handleSubmit} errors={errors} />
     );
 
 }

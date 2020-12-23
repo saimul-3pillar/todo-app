@@ -1,53 +1,57 @@
 import React from 'react';
-import { Link, HashRouter as Router } from 'react-router-dom';
+import { Link, HashRouter } from 'react-router-dom';
 import { TextField, Button, Container, FormHelperText, CardHeader } from '@material-ui/core';
 
-const SignupPage = ({ handleFirstname, handleLastname, handlePassword, handleUsername, handleSubmit, errors }) => {
+const SignupPage = ({ handleFirstName, handleLastName, handlePassword, handleEmail, handleSubmit, errors }) => {
 
     return (
         <Container maxWidth="sm">
             <CardHeader title="Signup Form" subheader="fill detail in below form to Signup"></CardHeader>
-            <form noValidate onSubmit={handleSubmit}>
+            <form data-testid="form" noValidate onSubmit={handleSubmit}>
                 <TextField
+                    data-testid="firstName"
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    id="firstname"
+                    id="firstName"
                     label="First Name"
-                    name="firstname"
-                    autoComplete="firstname"
+                    name="firstName"
+                    autoComplete="firstName"
                     autoFocus
-                    onChange={handleFirstname}
+                    onChange={handleFirstName}
                 />
-                <FormHelperText id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.firstnameerror : ""}</FormHelperText>
+                <FormHelperText data-testid="firstName-error-text" id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.firstNameError : ""}</FormHelperText>
                 <TextField
+                    data-testid="lastName"
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    id="lastname"
+                    id="lastName"
                     label="Last Name"
-                    name="lastname"
-                    autoComplete="lastname"
+                    name="lastName"
+                    autoComplete="lastName"
 
-                    onChange={handleLastname}
+                    onChange={handleLastName}
                 />
-                <FormHelperText id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.lastnameerror : ""}</FormHelperText>
+                <FormHelperText data-testid="lastName-error-text" id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.lastNameError : ""}</FormHelperText>
                 <TextField
+                    data-testid="email"
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    id="username"
-                    label="User Name"
-                    name="username"
-                    autoComplete="username"
+                    id="email"
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
 
-                    onChange={handleUsername}
+                    onChange={handleEmail}
                 />
-                <FormHelperText id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.usernameerror : ""}</FormHelperText>
+                <FormHelperText data-testid="email-error-text" id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.emailError : ""}</FormHelperText>
                 <TextField
+                    data-testid="password"
                     variant="outlined"
                     margin="normal"
                     required
@@ -60,11 +64,12 @@ const SignupPage = ({ handleFirstname, handleLastname, handlePassword, handleUse
                     onChange={handlePassword}
 
                 />
-                <FormHelperText id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.passworderror : ""}</FormHelperText>
-                <FormHelperText id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.error : ""}</FormHelperText>
+                <FormHelperText data-testid="password-error-text" id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.passwordError : ""}</FormHelperText>
+                <FormHelperText data-testid="general-error-text" id="my-helper-text" style={{ color: 'red' }}>{errors ? errors.error : ""}</FormHelperText>
 
-                Existing User? <Router><Link to="/"> Click here to login.</Link></Router>
+                Existing User? <HashRouter><Link to="/"> Click here to login.</Link></HashRouter>
                 <Button
+                    data-testid="submitButton"
                     type="submit"
                     fullWidth
                     variant="outlined"

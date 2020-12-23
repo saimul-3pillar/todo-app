@@ -3,22 +3,22 @@ import Login from './components/Login/Login-container';
 import Signup from './components/Signup/Signup-container';
 import Dashboard from './components/Dashboard/Dashboard-container';
 
-import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { HashRouter,  Redirect, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
+    <div className="App">
+      <HashRouter>
         <Switch>
           <Route path='/signup' component={Signup} />
           <Route path='/dashboard' component={Dashboard} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
           <Route >
-            <Redirect to="/login" />
+            <Redirect to="/" />
           </Route>
         </Switch>
-      </div>
-    </Router>
+      </HashRouter>
+    </div>
   );
 }
 

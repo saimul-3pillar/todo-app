@@ -4,53 +4,60 @@ import SignupPage from './SignupPage';
 
 const Signup = () => {
 
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [errors, setError] = useState({ firstnameerror: "", lastname: "", usernameerror: "", passworderror: "", error: "" });
+    const [errors, setError] = useState({ firstNameError: "", lastNameError: "", emailError: "", passwordError: "", error: "" });
     const history = useHistory();
-    let isValid = false;
+    let isValid = true;
 
-    const handleFirstname = (evt) => {
+    const handleFirstName = (evt) => {
         if (!evt.target.value) {
             isValid = false;
-            setError({ ...errors, firstnameerror: "First name can't be empty" });
+            setError({ ...errors, firstNameError: "First name can't be empty" });
         } else {
             isValid = true;
-            setError({ ...errors, firstnameerror: "" });
+
+            setError({ ...errors, firstNameError: "" });
+
         }
-        setFirstname(evt.target.value);
+        setFirstName(evt.target.value);
     }
-    const handleLastname = (evt) => {
+    const handleLastName = (evt) => {
         if (!evt.target.value) {
             isValid = false;
-            setError({ ...errors, lastnameerror: "Last name can't be empty" });
+            setError({ ...errors, lastNameError: "Last name can't be empty" });
         } else {
             isValid = true;
-            setError({ ...errors, lastnameerror: "" });
+
+            setError({ ...errors, lastNameError: "" });
+
         }
-        setLastname(evt.target.value);
+        setLastName(evt.target.value);
     }
-    const handleUsername = (evt) => {
+    const handleEmail = (evt) => {
         if (!evt.target.value) {
             isValid = false;
-            setError({ ...errors, usernameerror: "User name can't be empty" });
+            setError({ ...errors, emailError: "Email can't be empty" });
         } else {
             isValid = true;
-            setError({ ...errors, usernameerror: "" });
+
+            setError({ ...errors, emailError: "" });
+
         }
-        setUsername(evt.target.value);
+        setEmail(evt.target.value);
     }
     const handlePassword = (evt) => {
         if (!evt.target.value) {
             isValid = false;
-            setError({ ...errors, passworderror: "Password can't be empty" });
+            setError({ ...errors, passwordError: "Password can't be empty" });
 
         } else {
             isValid = true;
-            setError({ ...errors, passworderror: "" });
+
+            setError({ ...errors, passwordError: "" });
 
         }
         setPassword(evt.target.value);
@@ -58,34 +65,34 @@ const Signup = () => {
     const handleSubmit = (evt) => {
         evt.preventDefault();
         let er = {};
-        if (!firstname) {
+        if (!firstName) {
             isValid = false;
-            er = { ...er, firstnameerror: "First name can't be empty" };
-        } if (!lastname) {
+            er = { ...er, firstNameError: "First name can't be empty" };
+        } if (!lastName) {
             isValid = false;
-            er = { ...er, lastnameerror: "Last name can't be empty" };
+            er = { ...er, lastNameError: "Last name can't be empty" };
         }
-        if (!username) {
+        if (!email) {
             isValid = false;
-            er = { ...er, usernameerror: "User name can't be empty" };
+            er = { ...er, emailError: "Email can't be empty" };
         }
         if (!password) {
             isValid = false;
-            er = { ...er, passworderror: "Password can't be empty" };
+            er = { ...er, passwordError: "Password can't be empty" };
         }
-
+        console.log(isValid)
         if (!isValid) {
             setError({ ...errors, ...er });
         } else {
-            fetch('http://localhost:4000/users/register', {
-                method: "POST", headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ firstName: firstname, lastName: lastname, username: username, password: password })
+            fetch('http://localhost:4000/api/Users', {
+                method: "POST", headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ firstName: firstName, lastName: lastName, email: email, password: password })
             })
                 .then(response => {
                     return response.json();
                 })
                 .then(data => {
-                    if (data) {
+                    if (!data.error) {
                         console.log(data);
                         if (data.message) {
                             setError({ ...errors, error: data.message });
@@ -96,6 +103,8 @@ const Signup = () => {
                             history.push('/dashboard');
                         }
 
+                    } else {
+                        setError({ ...errors, error: data.error.message});
                     }
                 })
                 .catch(error => alert("Internal server error"));
@@ -103,7 +112,7 @@ const Signup = () => {
         }
     }
     return (
-        <SignupPage handleFirstname={handleFirstname} handleLastname={handleLastname} handlePassword={handlePassword} handleUsername={handleUsername} handleSubmit={handleSubmit} errors={errors} />
+        <SignupPage handleFirstName={handleFirstName} handleLastName={handleLastName} handlePassword={handlePassword} handleEmail={handleEmail} handleSubmit={handleSubmit} errors={errors} />
     )
 }
 export default Signup;

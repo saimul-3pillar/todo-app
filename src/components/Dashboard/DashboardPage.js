@@ -6,7 +6,7 @@ function DashboardPage() {
     return (
         <Container>
             <CardHeader title="Welcome to dashboard" />
-            <Button color="secondary" variant="contained" onClick={() => history.push('/')}>Logout</Button>
+            <Button data-testid="btn" color="secondary" variant="contained" onClick={() => history.push('/')}>Logout</Button>
         </Container>
     );
 }
